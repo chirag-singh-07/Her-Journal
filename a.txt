@@ -1,0 +1,1161 @@
+/* css/dashboard.css */
+
+body {
+  overflow-y: hidden; /* Hide body scroll, main content manages scroll */
+}
+
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  background: var(--bg-gradient);
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px; /* Slightly wider for better breathing room */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9); /* More opaque */
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px;
+  z-index: 20;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 50px;
+  padding: 0 10px;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.2);
+}
+
+.logo-text {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.sidebar-menu li {
+  margin-bottom: 8px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu li.active a {
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.08), transparent);
+  color: var(--primary);
+  transform: translateX(4px);
+  border-left: 3px solid var(--primary);
+}
+
+.sidebar-menu i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: background 0.3s;
+}
+
+.btn-logout:hover {
+  background: #fef2f2;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 0; /* Remove padding here to let header span full width */
+  position: relative;
+}
+
+/* Dashboard Header - Premium Layout */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px; /* Internal padding */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.03);
+}
+
+.header-left h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.date-display {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+  border-radius: 50px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding-right: 16px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto; /* Let rows size automatically */
+  gap: 30px;
+  padding: 40px; /* Add padding inside content area */
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.grid-item {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Quote Widget - Redesigned for Readability */
+.quote-widget {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  background: linear-gradient(
+    120deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(244, 114, 182, 0.1)
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-widget::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
+}
+
+.quote-widget .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.quote-widget h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quote-widget .btn-refresh {
+  background: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-widget .btn-refresh:hover {
+  transform: rotate(180deg);
+  background: var(--primary);
+  color: white;
+}
+
+.quote-widget blockquote {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-style: italic;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--text-main);
+  max-width: 80%;
+}
+
+/* Stats Widget */
+.stats-widget {
+  grid-column: 2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: white;
+}
+
+.stat-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--bg-body);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.3s;
+}
+
+.stat-box:hover {
+  background: white;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+  transform: scale(1.02);
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.icon-purple {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow: 0 8px 16px -4px rgba(109, 40, 217, 0.3);
+}
+
+.icon-pink {
+  background: linear-gradient(135deg, #f472b6, #db2777);
+  box-shadow: 0 8px 16px -4px rgba(219, 39, 119, 0.3);
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Editor Widget */
+.editor-widget {
+  grid-column: 1;
+  padding: 30px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-widget h3 {
+  font-size: 1.2rem;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.editor-wrapper textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 180px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  padding: 20px;
+  background: #f8fafc;
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.editor-wrapper textarea:focus {
+  background: white;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.05);
+}
+
+.editor-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 10px 20px;
+  border-radius: 50px;
+}
+
+.mood-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mood-selector .label {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.mood-dropdown {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+/* Recent Entries Widget */
+.entries-widget {
+  grid-column: 1 / 2;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.entries-widget .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.entries-widget h3 {
+  font-size: 1.4rem;
+  color: var(--text-main);
+  font-family: "Playfair Display", serif;
+}
+
+.entries-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.entry-card {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.entry-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+  background: white;
+  border-color: var(--primary-light);
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 12px;
+}
+
+.entry-date {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.entry-preview {
+  color: var(--text-main);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+  max-height: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.entry-actions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-actions button:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 2000;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 30px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal.active .modal-content {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .stats-widget {
+    grid-column: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+  }
+  .sidebar-menu,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .main-content {
+    overflow-y: visible;
+  }
+  .dashboard-header {
+    padding: 20px;
+    position: relative; /* Unstick on mobile if needed */
+  }
+  .dashboard-grid {
+    padding: 20px;
+    gap: 20px;
+  }
+  .header-left h2 {
+    font-size: 1.5rem;
+  }
+}
+
+
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Her Journal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+                <span class="logo-text">Her Journal</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active"><i class="fa-solid fa-house-chimney"></i> Overview</a></li>
+                <li><a href="#" class="nav-link"><i class="fa-solid fa-book-journal-whills"></i> My Entries</a></li>
+                <li><a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Mood Analytics</a></li>
+                <li><a href="#" class="nav-link"><i class="fa-solid fa-calendar-heart"></i> Calendar</a></li>
+                <li><a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            </ul>
+
+            <button onclick="logout()" class="logout-btn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Safe Header -->
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Hello, <?php echo htmlspecialchars($_SESSION['name'] ?? 'Lovely'); ?>! ✨</h1>
+                    <p class="date-text"><?php echo date('l, F j, Y'); ?></p>
+                </div>
+                <div class="user-actions">
+                    <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+                    <div class="user-profile" title="Profile">
+                        <?php echo strtoupper(substr($_SESSION['name'] ?? 'U', 0, 1)); ?>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Widgets Grid -->
+            <div class="dashboard-grid">
+
+                <!-- Quote Widget -->
+                <div class="card quote-card">
+                    <button class="refresh-quote" onclick="nextQuote()"><i class="fa-solid fa-rotate"></i></button>
+                    <div class="quote-content">
+                        <blockquote class="quote-text" id="quote">"Courage doesn't always roar. Sometimes courage is the
+                            quiet voice at the end of the day saying, 'I will try again tomorrow.'"</blockquote>
+                        <div class="quote-author">Daily Inspiration</div>
+                    </div>
+                </div>
+
+                <!-- Statistics Widgets -->
+                <div class="stats-card">
+                    <div class="stat-row">
+                        <div class="stat-icon fire"><i class="fa-solid fa-fire"></i></div>
+                        <div class="stat-info">
+                            <h3>3</h3>
+                            <p>Daily Streak</p>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon pen"><i class="fa-solid fa-pen-fancy"></i></div>
+                        <div class="stat-info">
+                            <h3 id="totalEntries">0</h3>
+                            <p>Total Entries</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Entry Editor -->
+                <div class="card editor-card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-regular fa-pen-to-square"></i> Write your heart out</span>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea id="thoughts" placeholder="How was your day? What's on your mind?"></textarea>
+                    </div>
+                    <div class="editor-footer">
+                        <select id="mood" class="mood-select">
+                            <option value="Happy">😊 Happy</option>
+                            <option value="Calm">😌 Calm</option>
+                            <option value="Sad">😢 Sad</option>
+                            <option value="Anxious">😰 Anxious</option>
+                            <option value="Energetic">⚡ Energetic</option>
+                            <option value="Grateful">🙏 Grateful</option>
+                        </select>
+                        <button class="btn-primary" onclick="saveEntry()">Save Entry</button>
+                    </div>
+                </div>
+
+                <!-- Recent Entries List -->
+                <div class="card entries-card">
+                    <div class="entries-header">
+                        <span class="card-title">Recent Moments</span>
+                        <a href="#"
+                            style="color: var(--primary); font-size: 0.9rem; text-decoration: none; font-weight: 500;">View
+                            All</a>
+                    </div>
+                    <div id="entries-list" class="entries-list">
+                        <!-- Entries injected via JS -->
+                        <div class="empty-state">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <h3>Edit Entry</h3>
+            <div class="textarea-wrapper" style="margin: 20px 0; height: 150px;">
+                <textarea id="editText"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+                <button class="btn-primary" onclick="updateEntry()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let entries = [];
+        let editIndex = null;
+
+        const quotes = [
+            "Believe you can and you're halfway there.",
+            "You are enough just as you are.",
+            "The best way to predict the future is to create it.",
+            "Every day is a fresh start.",
+            "Turn your wounds into wisdom."
+        ];
+
+        function nextQuote() {
+            const el = document.getElementById("quote");
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+                el.style.opacity = 1;
+            }, 300);
+        }
+
+        async function loadEntries() {
+            try {
+                const res = await fetch("../php/get_entries.php");
+                if (res.status === 403) return window.location.href = "login.php";
+                const data = await res.json();
+                entries = data;
+                document.getElementById("totalEntries").innerText = entries.length;
+                renderEntries();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderEntries() {
+            const list = document.getElementById("entries-list");
+            list.innerHTML = "";
+
+            if (entries.length === 0) {
+                list.innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-regular fa-paper-plane"></i>
+                    <p>No entries yet. Start writing today!</p>
+                </div>`;
+                return;
+            }
+
+            entries.forEach((entry, i) => {
+                const date = new Date(entry.entry_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+                const item = document.createElement("div");
+                item.className = "entry-item";
+                item.onclick = (e) => {
+                    // Prevent edit/delete clicks from toggling
+                    if (e.target.closest('button')) return;
+                    // Optional: View details
+                };
+                item.innerHTML = `
+                    <div class="entry-top">
+                        <span class="entry-date">${date}</span>
+                        <div class="entry-actions-mini" style="display:flex; gap:8px;">
+                            <button onclick="openEdit(${i})" style="border:none; background:none; cursor:pointer; color:var(--text-muted);"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteEntry(${i})" style="border:none; background:none; cursor:pointer; color:#ef4444;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <span class="entry-mood">${getMoodIcon(entry.mood)}</span>
+                        <strong style="font-size:0.9rem;">${entry.mood}</strong>
+                    </div>
+                    <p class="entry-preview">${entry.text}</p>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function getMoodIcon(mood) {
+            const icons = { 'Happy': '😊', 'Calm': '😌', 'Sad': '😢', 'Anxious': '😰', 'Energetic': '⚡', 'Grateful': '🙏' };
+            return icons[mood] || '😐';
+        }
+
+        async function saveEntry() {
+            const text = document.getElementById("thoughts").value;
+            const mood = document.getElementById("mood").value;
+            if (!text) return alert("Please write something!");
+
+            const fd = new FormData();
+            fd.append("text", text);
+            fd.append("mood", mood);
+            await fetch("../php/save_entry.php", { method: "POST", body: fd });
+            document.getElementById("thoughts").value = "";
+            loadEntries();
+        }
+
+        async function deleteEntry(i) {
+            if (!confirm("Are you sure you want to delete this memory?")) return;
+            const fd = new FormData();
+            fd.append("id", entries[i].id);
+            await fetch("../php/delete_entry.php", { method: "POST", body: fd });
+            loadEntries();
+        }
+
+        function openEdit(i) {
+            editIndex = i;
+            document.getElementById("editText").value = entries[i].text;
+            document.getElementById("editModal").classList.add("active");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove("active");
+        }
+
+        async function updateEntry() {
+            const fd = new FormData();
+            fd.append("id", entries[editIndex].id);
+            fd.append("text", document.getElementById("editText").value);
+            await fetch("../php/update_entry.php", { method: "POST", body: fd });
+            closeModal("editModal");
+            loadEntries();
+        }
+
+        async function logout() {
+            await fetch("../php/logout.php");
+            window.location.href = "login.php";
+        }
+
+        window.onload = () => {
+            loadEntries();
+            nextQuote(); // Init quote
+        };
+    </script>
+</body>
+
+</html>
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
+
+:root {
+  /* Premium Palette */
+  --primary: #7c3aed;
+  --primary-dark: #6d28d9;
+  --primary-light: #a78bfa;
+  --accent: #f472b6;
+  --accent-glow: rgba(244, 114, 182, 0.4);
+
+  --bg-body: #fdfbfd;
+  --bg-gradient: radial-gradient(
+    circle at 10% 20%,
+    rgb(249, 243, 255) 0%,
+    rgb(255, 255, 255) 90%
+  );
+
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-hover: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.8);
+
+  --text-main: #2d2a3d;
+  --text-muted: #64748b;
+
+  --shadow-sm:
+    0 4px 6px -1px rgba(124, 58, 237, 0.05),
+    0 2px 4px -1px rgba(124, 58, 237, 0.03);
+  --shadow-md:
+    0 10px 15px -3px rgba(124, 58, 237, 0.08),
+    0 4px 6px -2px rgba(124, 58, 237, 0.04);
+  --shadow-lg:
+    0 20px 25px -5px rgba(124, 58, 237, 0.1),
+    0 10px 10px -5px rgba(124, 58, 237, 0.04);
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  /* color: var(--text-main); */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+h1,
+h2,
+h3 {
+  font-family:
+    "Outfit", sans-serif; /* Can switch to Playfair for headings if desired */
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 8px 20px -4px rgba(124, 58, 237, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(124, 58, 237, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--primary-dark);
+  border: 1px solid rgba(124, 58, 237, 0.1);
+}
+
+.btn-secondary:hover {
+  background: white;
+  border-color: rgba(124, 58, 237, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Inputs */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Footer (Shared) */
+.site-footer {
+  margin-top: 80px;
+  padding: 60px 0 30px;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.4);
+}
