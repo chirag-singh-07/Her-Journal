@@ -28,6 +28,8 @@ if ($hour >= 17)
     <!-- CSS -->
     <link rel="stylesheet" href="../css/shared.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Overview Specific Styles */
         .welcome-section {
@@ -239,6 +241,22 @@ if ($hour >= 17)
             right: -20px;
             color: rgba(56, 189, 248, 0.1);
         }
+
+        /* Chart Container Styles */
+        .chart-widget {
+            grid-column: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -287,6 +305,17 @@ if ($hour >= 17)
                         <div style="text-align: center; color: var(--text-muted); padding: 40px;">
                             <i class="fa-solid fa-spinner fa-spin"></i> Loading updates...
                         </div>
+                    </div>
+                </div>
+
+                <!-- Chart Widget -->
+                <div class="chart-widget">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3><i class="fa-solid fa-chart-bar"></i> Writing Activity</h3>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Last 7 days</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="dashboardChart"></canvas>
                     </div>
                 </div>
 
@@ -354,6 +383,11 @@ if ($hour >= 17)
 
     <script src="../js/common.js"></script>
     <script>
+        Chart.defaults.font.family = "'Outfit', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        let dashboardChart = null;
+
         // Load recent activity timeline
         async function loadTimeline() {
             const container = document.getElementById('timeline-container');
@@ -388,10 +422,74 @@ if ($hour >= 17)
                 }).join('');
 
                 window.entriesData = entries; // Store for modal
+                loadDashboardChart(entries);
             } catch (e) {
                 console.error(e);
                 container.innerHTML = '<p style="color: red; text-align: center;">Failed to load activity.</p>';
             }
+        }
+
+        function loadDashboardChart(entries) {
+            // Create a map of dates for the last 7 days
+            const today = new Date();
+            const dateMap = {};
+            const labels = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                labels.push(dateStr);
+                dateMap[dateStr] = 0;
+            }
+            
+            // Count entries per day
+            entries.forEach(entry => {
+                const entryDate = new Date(entry.entry_date);
+                const dateStr = entryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                if (dateMap.hasOwnProperty(dateStr)) {
+                    dateMap[dateStr]++;
+                }
+            });
+            
+            const chartData = labels.map(l => dateMap[l]);
+
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            if (dashboardChart) {
+                dashboardChart.destroy();
+            }
+
+            dashboardChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Entries Written',
+                        data: chartData,
+                        backgroundColor: 'rgba(219, 39, 119, 0.7)',
+                        borderColor: '#db2777',
+                        borderRadius: 8,
+                        barThickness: 35,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { borderDash: [5, 5] }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
         }
 
         function getMoodIcon(mood) {

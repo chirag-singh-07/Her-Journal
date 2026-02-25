@@ -159,12 +159,12 @@ $page_title = 'Calendar';
                 <div class="glass-card" style="padding: 30px;">
                     <div class="calendar-header">
                         <div style="display: flex; gap: 15px; align-items: center;">
-                            <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">Today</button>
-                            <h2 style="font-family: 'Outfit', sans-serif;">February 2026</h2>
+                            <button id="todayBtn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">Today</button>
+                            <h2 id="monthTitle" style="font-family: 'Outfit', sans-serif;">Loading...</h2>
                         </div>
                         <div class="calendar-nav">
-                            <button><i class="fa-solid fa-chevron-left"></i></button>
-                            <button><i class="fa-solid fa-chevron-right"></i></button>
+                            <button id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
 
@@ -176,94 +176,190 @@ $page_title = 'Calendar';
                         <div class="weekday">Thu</div>
                         <div class="weekday">Fri</div>
                         <div class="weekday">Sat</div>
-
-                        <!-- Previous Month Days -->
-                        <div class="day-cell other-month"><span class="day-number">26</span></div>
-                        <div class="day-cell other-month"><span class="day-number">27</span></div>
-                        <div class="day-cell other-month"><span class="day-number">28</span></div>
-                        <div class="day-cell other-month"><span class="day-number">29</span></div>
-                        <div class="day-cell other-month"><span class="day-number">30</span></div>
-                        <div class="day-cell other-month"><span class="day-number">31</span></div>
-                        
-                        <!-- Current Month Days (Fake Data) -->
-                        <div class="day-cell"><span class="day-number">1</span></div>
-                        <div class="day-cell">
-                            <span class="day-number">2</span>
-                            <div class="entry-marker">
-                                <span class="mood-dot" style="background: #f472b6;"></span> Mood: Happy
+                        <div id="calendar-body">
+                            <div style="text-align: center; padding: 40px; color: var(--text-muted);" class="weekday" style="grid-column: 1 / -1;">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Loading calendar...
                             </div>
                         </div>
-                        <div class="day-cell"><span class="day-number">3</span></div>
-                        <div class="day-cell">
-                             <span class="day-number">4</span>
-                             <div class="entry-marker">
-                                <span class="mood-dot" style="background: #64748b;"></span> Mood: Anxious
-                            </div>
-                        </div>
-                        <div class="day-cell"><span class="day-number">5</span></div>
-                        <div class="day-cell"><span class="day-number">6</span></div>
-                        <div class="day-cell"><span class="day-number">7</span></div>
-                        <div class="day-cell"><span class="day-number">8</span></div>
-                        <div class="day-cell">
-                            <span class="day-number">9</span>
-                            <div class="entry-marker">
-                                <span class="mood-dot" style="background: #f59e0b;"></span> Mood: Energetic
-                            </div>
-                        </div>
-                         <div class="day-cell"><span class="day-number">10</span></div>
-                         <div class="day-cell"><span class="day-number">11</span></div>
-                         <div class="day-cell"><span class="day-number">12</span></div>
-                         <div class="day-cell"><span class="day-number">13</span></div>
-                         <div class="day-cell"><span class="day-number">14</span>
-                             <div class="entry-marker">
-                                <span class="mood-dot" style="background: #7c3aed;"></span> Mood: Love
-                            </div>
-                         </div>
-                         <div class="day-cell"><span class="day-number">15</span></div>
-                         <div class="day-cell"><span class="day-number">16</span></div>
-                         <div class="day-cell today">
-                             <span class="day-number">17</span>
-                             <div class="entry-marker">
-                                <span class="mood-dot" style="background: #10b981;"></span> Mood: Calm
-                            </div>
-                         </div>
-                         <div class="day-cell"><span class="day-number">18</span></div>
-                         <div class="day-cell"><span class="day-number">19</span></div>
-                         <div class="day-cell"><span class="day-number">20</span></div>
-                         <div class="day-cell"><span class="day-number">21</span></div>
-                         <div class="day-cell"><span class="day-number">22</span></div>
-                         <div class="day-cell"><span class="day-number">23</span></div>
-                         <div class="day-cell"><span class="day-number">24</span></div>
-                         <div class="day-cell"><span class="day-number">25</span></div>
-                         <div class="day-cell"><span class="day-number">26</span></div>
-                         <div class="day-cell"><span class="day-number">27</span></div>
-                         <div class="day-cell"><span class="day-number">28</span></div>
                     </div>
                 </div>
 
                 <!-- Sidebar for Selected Date -->
                 <div class="selected-date-info">
-                    <h3 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-muted);">Feb 17, 2026 (Today)</h3>
-                    
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <div style="width: 80px; height: 80px; border-radius: 50%; background: #d1fae5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 15px;">
-                            😌
-                        </div>
-                        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem;">Feeling Calm</h2>
-                        <p style="color: var(--text-muted);">"Took a long walk in the park today..."</p>
-                    </div>
-
-                    <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px;">
-                        <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 15px; letter-spacing: 1px;">Memories</h4>
-                        <div style="border-radius: 12px; overflow: hidden; margin-bottom: 10px;">
-                            <img src="https://images.unsplash.com/photo-1490750967868-58cb807861d2?auto=format&fit=crop&q=80&w=400" style="width: 100%; height: 120px; object-fit: cover;">
-                        </div>
-                        <button class="btn btn-secondary" style="width: 100%;">View Full Entry</button>
+                    <h3 id="dateTitle" style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-muted);">Select a date</h3>
+                    <div id="entriesContainer" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i class="fa-regular fa-calendar"></i>
+                        <p>Click on a date to view entries</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     <script src="../js/common.js"></script>
+    <script>
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth() + 1;
+        let selectedDate = null;
+
+        const mood_emojis = {
+            'Happy': '😊',
+            'Calm': '😌',
+            'Sad': '😢',
+            'Anxious': '😰',
+            'Energetic': '⚡'
+        };
+
+        async function loadCalendar(year, month) {
+            try {
+                const res = await fetch(`../php/get_calendar.php?year=${year}&month=${month}`);
+                if (res.status === 403) return window.location.href = "login.php";
+                const data = await res.json();
+
+                // Update month title
+                document.getElementById('monthTitle').textContent = `${data.month_name} ${data.year}`;
+
+                // Build calendar days
+                const calendarBody = document.getElementById('calendar-body');
+                calendarBody.innerHTML = '';
+
+                data.calendar_days.forEach(day => {
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'day-cell';
+                    
+                    if (day.is_other_month) {
+                        dayCell.classList.add('other-month');
+                    }
+                    
+                    if (day.is_today) {
+                        dayCell.classList.add('today');
+                    }
+
+                    let html = `<span class="day-number">${day.day}</span>`;
+                    
+                    // Add entry markers
+                    if (day.entries.length > 0) {
+                        const entry = day.entries[0]; // Get first entry of the day
+                        const moodColor = data.mood_colors[entry.mood] || '#6366f1';
+                        const moodEmoji = mood_emojis[entry.mood] || '📝';
+                        
+                        html += `
+                            <div class="entry-marker">
+                                <span class="mood-dot" style="background: ${moodColor};"></span>
+                                <span>${moodEmoji}</span>
+                            </div>
+                        `;
+
+                        if (day.entries.length > 1) {
+                            html += `<div class="entry-marker" style="font-size: 0.7rem; background: rgba(0,0,0,0.05); padding: 2px 6px;">+${day.entries.length - 1} more</div>`;
+                        }
+                    }
+
+                    dayCell.innerHTML = html;
+                    dayCell.style.cursor = 'pointer';
+                    
+                    // Click handler
+                    dayCell.addEventListener('click', () => {
+                        loadDateEntries(day.date);
+                    });
+
+                    calendarBody.appendChild(dayCell);
+                });
+
+                // Load today's entries by default
+                const today = new Date();
+                if (today.getFullYear() === year && today.getMonth() + 1 === month) {
+                    const todayStr = today.toISOString().split('T')[0];
+                    loadDateEntries(todayStr);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function loadDateEntries(date) {
+            try {
+                selectedDate = date;
+                const res = await fetch(`../php/get_calendar_entries.php?date=${date}`);
+                const data = await res.json();
+
+                const dateObj = new Date(date);
+                const dateFormatted = dateObj.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+
+                const isToday = date === new Date().toISOString().split('T')[0];
+                document.getElementById('dateTitle').textContent = `${dateFormatted}${isToday ? ' (Today)' : ''}`;
+
+                const entriesContainer = document.getElementById('entriesContainer');
+
+                if (data.entries.length === 0) {
+                    entriesContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <i class="fa-regular fa-pen-to-square" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <p>No entries for this date</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                entriesContainer.innerHTML = data.entries.map((entry, idx) => {
+                    const mood = entry.mood || 'Unknown';
+                    const moodEmoji = mood_emojis[mood] || '📝';
+                    const entryTime = new Date(entry.entry_date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    
+                    let htmlPreview = entry.text;
+                    if (htmlPreview.length > 150) {
+                        htmlPreview = htmlPreview.substring(0, 150) + '...';
+                    }
+
+                    return `
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; text-align: left; border-left: 4px solid var(--primary);" class="entry-card">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div style="font-size: 2rem;">${moodEmoji}</div>
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">${entryTime}</span>
+                            </div>
+                            <h4 style="margin: 0 0 8px 0; color: var(--text-main);">${mood}</h4>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">${htmlPreview}</p>
+                            ${entry.attachment_path ? `<div style="margin-top: 12px; border-radius: 8px; overflow: hidden; height: 100px;"><img src="../${entry.attachment_path}" style="width: 100%; height: 100%; object-fit: cover;"></div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            loadCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            }
+            loadCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            currentYear = new Date().getFullYear();
+            currentMonth = new Date().getMonth() + 1;
+            loadCalendar(currentYear, currentMonth);
+        });
+
+        // Load initial calendar
+        loadCalendar(currentYear, currentMonth);
+    </script>
 </body>
 </html>

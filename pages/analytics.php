@@ -79,8 +79,8 @@ $page_title = 'Analytics';
                     </div>
                     <div>
                         <h4 style="color: var(--text-muted); font-weight: 500;">Current Streak</h4>
-                        <h2 style="font-size: 2.5rem; line-height: 1.1;">7 Days</h2>
-                        <span style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-arrow-trend-up"></i> +2 from last week</span>
+                        <h2 id="streak-value" style="font-size: 2.5rem; line-height: 1.1;">-</h2>
+                        <span style="color: #10b981; font-weight: 600;" id="streak-text"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</span>
                     </div>
                 </div>
 
@@ -90,8 +90,8 @@ $page_title = 'Analytics';
                     </div>
                     <div>
                         <h4 style="color: var(--text-muted); font-weight: 500;">Average Mood</h4>
-                        <h2 style="font-size: 2.5rem; line-height: 1.1;">Happy</h2>
-                        <span style="color: var(--primary); font-weight: 600;">Mainly positive vibes!</span>
+                        <h2 id="mood-value" style="font-size: 2.5rem; line-height: 1.1;">-</h2>
+                        <span id="mood-text" style="color: var(--primary); font-weight: 600;">Loading...</span>
                     </div>
                 </div>
 
@@ -148,106 +148,173 @@ $page_title = 'Analytics';
     </div>
     <script src="../js/common.js"></script>
     <script>
-        // Chart Configs
+        let charts = {};
+        const selectedPeriod = '7'; // Default to 7 days
+
+        async function loadAnalyticsData(period = '7') {
+            try {
+                const res = await fetch(`../php/get_analytics.php?period=${period}`);
+                if (res.status === 403) return window.location.href = "login.php";
+                const data = await res.json();
+
+                // Update stats
+                document.getElementById('streak-value').textContent = data.stats.streak + ' Days';
+                document.getElementById('streak-text').innerHTML = data.stats.streak > 0 ? 
+                    `<i class="fa-solid fa-arrow-trend-up"></i> Keep it up! 🔥` : 
+                    'Start writing to build a streak!';
+                document.getElementById('mood-value').textContent = data.stats.dominant_mood;
+                document.getElementById('mood-text').textContent = 'Your most frequent mood this period';
+
+                // Update charts
+                updateMoodTrendChart(data.daily_entries);
+                updateMoodDistributionChart(data.mood_distribution);
+                updateConsistencyChart(data.weekly_entries);
+
+                return data;
+            } catch (e) {
+                console.error('Failed to load analytics:', e);
+            }
+        }
+
+        function updateMoodTrendChart(dailyData) {
+            const ctx = document.getElementById('moodChart').getContext('2d');
+            
+            if (charts.moodChart) {
+                charts.moodChart.destroy();
+            }
+
+            // Create a map of all dates from today backwards
+            const today = new Date();
+            const dateMap = {};
+            const labels = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                labels.push(dateStr);
+                dateMap[dateStr] = 0;
+            }
+            
+            // Fill in actual data
+            dailyData.labels.forEach((label, idx) => {
+                if (dateMap.hasOwnProperty(label)) {
+                    dateMap[label] = dailyData.data[idx];
+                }
+            });
+            
+            const chartData = labels.map(l => dateMap[l]);
+
+            charts.moodChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Entries Written',
+                        data: chartData,
+                        backgroundColor: 'rgba(124, 58, 237, 0.7)',
+                        borderColor: '#7c3aed',
+                        borderRadius: 8,
+                        barThickness: 40,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { borderDash: [5, 5] }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function updateMoodDistributionChart(moodData) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            if (charts.pieChart) {
+                charts.pieChart.destroy();
+            }
+
+            charts.pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: moodData.labels,
+                    datasets: [{
+                        data: moodData.data,
+                        backgroundColor: moodData.colors,
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function updateConsistencyChart(weeklyData) {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            
+            if (charts.barChart) {
+                charts.barChart.destroy();
+            }
+
+            charts.barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: weeklyData.labels.length > 0 ? weeklyData.labels : ['No Data'],
+                    datasets: [{
+                        label: 'Entries per Week',
+                        data: weeklyData.data.length > 0 ? weeklyData.data : [0],
+                        backgroundColor: '#a78bfa',
+                        borderRadius: 8,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // Chart.js defaults
         Chart.defaults.font.family = "'Outfit', sans-serif";
         Chart.defaults.color = '#64748b';
 
-        // Mood Trend Line Chart
-        const moodCtx = document.getElementById('moodChart').getContext('2d');
-        new Chart(moodCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Mood Score',
-                    data: [3, 4, 3, 5, 4, 5, 4], // 1-5 scale (Sad to Happy/Energetic)
-                    borderColor: '#7c3aed',
-                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#f472b6',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 6,
-                        ticks: {
-                            callback: function(value) {
-                                const moods = ['', '😢 Sad', '😰 Anxious', '😌 Calm', '😊 Happy', '⚡ Energetic'];
-                                return moods[value] || '';
-                            }
-                        },
-                        grid: { borderDash: [5, 5] }
-                    },
-                    x: { grid: { display: false } }
-                }
-            }
+        // Load data on page load
+        window.addEventListener('load', () => {
+            loadAnalyticsData('7');
         });
 
-        // Mood Distribution Pie Chart
-        const pieCtx = document.getElementById('pieChart').getContext('2d');
-        new Chart(pieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Happy', 'Calm', 'Energetic', 'Anxious', 'Sad'],
-                datasets: [{
-                    data: [45, 25, 15, 10, 5],
-                    backgroundColor: [
-                        '#7c3aed', // Purple
-                        '#f472b6', // Pink
-                        '#f59e0b', // Orange
-                        '#64748b', // Gray
-                        '#3b82f6'  // Blue
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'right' }
-                },
-                cutout: '70%'
-            }
-        });
-
-        // Consistency Bar Chart
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                    label: 'Entries per Week',
-                    data: [5, 7, 4, 6],
-                    backgroundColor: '#a78bfa',
-                    borderRadius: 8,
-                    barThickness: 40
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { display: false },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
+        // Handle period selection changes (if needed)
+        const periodSelect = document.querySelector('select');
+        if (periodSelect) {
+            periodSelect.addEventListener('change', (e) => {
+                const period = e.target.value === 'Last 7 Days' ? '7' : 
+                              e.target.value === 'Last 30 Days' ? '30' : 'all';
+                loadAnalyticsData(period);
+            });
+        }
     </script>
 </body>
 </html>
